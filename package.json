@@ -28,7 +28,6 @@
     "pino-pretty": "^11.0.0",
     "sqlite3": "^5.1.7",
     "swagger-ui-express": "^5.0.0",
-    "tsx": "^4.7.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -41,6 +40,7 @@
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
     "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
     "typescript": "^5.4.3"
   }
 }

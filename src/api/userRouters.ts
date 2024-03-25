@@ -14,36 +14,55 @@ userRegistry.register('User', UserSchema);
 export const userRouter: Router = (() => {
   const router = express.Router();
   const userController = new UserController();
-  const pathName = "/users"
+
+  const path = (swagger = false) => swagger  ? "/api/users" : "/users";
 
   userRegistry.registerPath({
     method: 'get',
-    path: pathName,
+    path: path(true),
     tags: ['User'],
     responses: createApiResponse(z.array(UserSchema), 'Success'),
   });
 
-  router.get(pathName, userController.getAll.bind(userController));
+  router.get(path(), userController.getAll.bind(userController));
 
   userRegistry.registerPath({
     method: 'post',
-    path: pathName + '/create',
+    path: path(true) + '/create',
     tags: ['User'],
-    request: { body: UserCreateSchema.shape.body as any },
+    request: { 
+      body: {
+        description: "create user",
+        content: {
+          'application/json': {
+            schema:  UserCreateSchema.shape.body
+          },
+        },
+      }  
+    },
     responses: createApiResponse(z.array(UserSchema), 'Success'),
   });
 
   router.post(
-    pathName + '/create', 
+    path() + '/create', 
     validateRequest(UserCreateSchema),
     userController.create.bind(userController)
   );
 
   userRegistry.registerPath({
     method: 'post',
-    path: '/auth',
+    path: '/api/auth',
     tags: ['User'],
-    request: { body: AuthenticationSchema.shape.body as any },
+    request: { 
+      body: {
+        description: "create user",
+        content: {
+          'application/json': {
+            schema:  AuthenticationSchema.shape.body
+          },
+        },
+      }  
+    },
     responses: createApiResponse(z.array(UserSchema), 'Success'),
   });
 
@@ -52,13 +71,22 @@ export const userRouter: Router = (() => {
 
   userRegistry.registerPath({
     method: 'delete',
-    path: pathName + '/delete',
+    path: path(true) + '/delete',
     tags: ['User'],
-    request: { body: UserDeleteSchema.shape.body as any },
-    responses: createApiResponse(z.array(UserSchema), 'Success'),
+    request: { 
+      body: {
+        description: "create user",
+        content: {
+          'application/json': {
+            schema:  UserDeleteSchema.shape.body
+          },
+        },
+      }  
+    },
+    responses: createApiResponse(z.array(UserDeleteSchema), 'Success'),
   });
 
-  router.delete(pathName + '/delete', validateRequest(UserDeleteSchema), userController.delete.bind(userController));
+  router.delete(path() + '/delete', validateRequest(UserDeleteSchema), userController.delete.bind(userController));
 
   return router;
 })();

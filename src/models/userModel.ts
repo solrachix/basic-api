@@ -23,7 +23,7 @@ export type UserCreate = z.infer<typeof UserCreateSchema.shape.body>;
 export const UserCreateSchema = z.object({
   body: z.object({
     name: z.string(),
-    email: z.string(),
+    email: z.string().email(),
     password: z.string()
   }),
 });

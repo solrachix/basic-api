@@ -16,7 +16,7 @@ export class UserService {
 
   async getAll (): Promise<ServiceResponse<User[] | null>> {
     try {
-      const users = await this.repository.getAll();
+      const users = await this.repository.getAllUsers();
 
       if (!users) {
         return new ServiceResponse(ResponseStatus.Failed, 'No Users found', null, StatusCodes.NOT_FOUND);

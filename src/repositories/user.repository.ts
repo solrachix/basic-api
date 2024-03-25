@@ -9,4 +9,8 @@ export class UserRepository extends BaseRepository<User> {
   search (search: string): Promise<User[]> {
     return this.qb.where('name', 'like', `%${String(search)}%`).select('*')
   }
+
+  getAllUsers (): Promise<User[]> {
+    return this.qb.select('id', 'email', 'name')
+  }
 }

@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-// import { openAPIRouter } from './api-docs/openAPIRouter'
+import { openAPIRouter } from './api-docs/openAPIRouter'
 import errorHandler from './middleware/errorHandler'
 import routers from './api/routes'
 
@@ -16,7 +16,7 @@ app.use(express.json())
 
 app.use('/api', routers);
 
-// app.use(openAPIRouter);
+app.use(openAPIRouter);
 
 app.use(errorHandler());
 

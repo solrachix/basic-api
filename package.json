@@ -5,14 +5,11 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/server.ts | pino-pretty",
-    "build": "rimraf dist && tsup",
-    "start": "node dist/server.js",
+    "build": "rimraf dist && tsc",
+    "start": "node ./dist/src/server.js",
     "knex:migrate": "knex --knexfile knexfile.js migrate:latest",
     "knex:migrate:rollback": "knex --knexfile knexfile.js migrate:rollback",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix",
-    "format": "prettier --config .prettierrc --write ."
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000"
   },
   "keywords": [],
   "author": "",
@@ -39,7 +36,6 @@
     "rimraf": "^5.0.5",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
-    "tsup": "^8.0.2",
     "tsx": "^4.7.1",
     "typescript": "^5.4.3"
   }

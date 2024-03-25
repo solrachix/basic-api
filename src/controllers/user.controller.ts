@@ -13,10 +13,17 @@ export default class UserController {
   }
 
   async create (req: Request, res: Response): Promise<Response<unknown>> {
-    console.log(req)
     const { name, email, password } = req.body
 
     const user = await this.service.create({ name, email, password })
+
+    return handleServiceResponse(user, res)
+  }
+
+  async delete (req: Request, res: Response): Promise<Response<unknown>> {
+    const { id } = req.body
+
+    const user = await this.service.delete(id)
 
     return handleServiceResponse(user, res)
   }

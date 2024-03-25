@@ -6,7 +6,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
   public readonly knex: Knex = db
 
   constructor (public readonly tableName: string) {
-    console.log('KnexRepository')
+    console.log('KnexRepository: ', tableName)
   }
 
   public get qb (): Knex.QueryBuilder {

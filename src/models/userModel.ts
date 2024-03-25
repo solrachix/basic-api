@@ -28,6 +28,13 @@ export const UserCreateSchema = z.object({
   }),
 });
 
+export type UserDelete = z.infer<typeof UserDeleteSchema.shape.body>;
+export const UserDeleteSchema = z.object({
+  body: z.object({
+    id: z.number(),
+  }),
+});
+
 export type AuthData = z.infer<typeof AuthenticationSchema.shape.body>;
 export const AuthenticationSchema = z.object({
   body: z.object({

@@ -62,19 +62,43 @@ export class UserService {
     }
   }
 
+  async delete(id: number) {
+    if(!id) {
+      return new ServiceResponse(ResponseStatus.Failed, 'User Id cannot be empty', null, StatusCodes.BAD_REQUEST);
+    }
+
+    try {
+      const verify = await this.repository.find({ id });
+  
+      if (verify.length <= 0) return new ServiceResponse(ResponseStatus.Failed, 'User not found', null, StatusCodes.NOT_FOUND);
+
+      await this.repository.delete(id);
+
+      return new ServiceResponse<null>(ResponseStatus.Success, 'User deleted', null, StatusCodes.OK);
+    } catch (ex) {
+      const errorMessage = `Error in delete user: $${(ex as Error).message}`;
+      return new ServiceResponse(ResponseStatus.Failed, errorMessage, null, StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async authenticate (data: AuthData): Promise<ServiceResponse<{ user: User, token: any } | null>> {
-    const [user] = await this.repository.find({ email: data.email })
+    try {
+      const [user] = await this.repository.find({ email: data.email })
 
-    if (!user) return new ServiceResponse(ResponseStatus.Failed, 'User not found', null, StatusCodes.NOT_FOUND);
+      if (!user) return new ServiceResponse(ResponseStatus.Failed, 'User not found', null, StatusCodes.BAD_REQUEST);
 
-    const response = await compareHash(user.password, String(data.password))
-    if (!response) return new ServiceResponse(ResponseStatus.Failed, 'Email or password incorrect', null, StatusCodes.FORBIDDEN);
+      const response = await compareHash(user.password, String(data.password))
+      if (!response) return new ServiceResponse(ResponseStatus.Failed, 'Email or password incorrect', null, StatusCodes.FORBIDDEN);
 
-    delete user.password
+      delete user.password
 
-    return new ServiceResponse<{ user: User, token: any }>(ResponseStatus.Success, 'User found', {
-      user,
-      token: generateToken(Number(user.id))
-    }, StatusCodes.OK);
+      return new ServiceResponse<{ user: User, token: any }>(ResponseStatus.Success, 'User found', {
+        user,
+        token: generateToken(Number(user.id))
+      }, StatusCodes.OK);
+    } catch (ex) {
+      const errorMessage = `Error in authentication user: $${(ex as Error).message}`;
+      return new ServiceResponse(ResponseStatus.Failed, errorMessage, null, StatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
 }

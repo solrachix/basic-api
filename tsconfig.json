@@ -4,6 +4,7 @@
     "dist",
     "package.json",
     "jest.**",
+    "__tests__"
   ],
   "compilerOptions": {
     "module": "commonjs",
